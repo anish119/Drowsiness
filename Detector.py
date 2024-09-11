@@ -9,12 +9,13 @@ warnings.filterwarnings("ignore")
 mp_face_mesh = mp.solutions.face_mesh
 face_mesh = mp_face_mesh.FaceMesh(static_image_mode=False, max_num_faces=1, min_detection_confidence=0.5, min_tracking_confidence=0.5)
 
-# EAR threshold and consecutive frame count
-EYE_AR_THRESH = 0.15
+
+EYE_AR_THRESH = 0.30
 EYE_AR_CONSEC_FRAMES = 30
 COUNTER = 0
 
-YOUTUBE_VIDEO_URL = 'https://www.youtube.com/watch?v=nToFz87NdyE&ab_channel=MelodyChillMix'  
+
+YOUTUBE_VIDEO_URL = 'https://youtu.be/2ydCvkxuNm4?si=yK2BwRu-zQjIFh_s'  
 
 LEFT_EYE = [33, 160, 158, 133, 153, 144]
 RIGHT_EYE = [362, 385, 387, 263, 373, 374]
@@ -29,6 +30,8 @@ def eye_aspect_ratio(eye_landmarks):
     return ear
 
 cap = cv2.VideoCapture(0)
+
+cv2.namedWindow('Drowsiness Detector', cv2.WND_PROP_FULLSCREEN)
 
 video_opened = False
 
@@ -67,8 +70,11 @@ try:
                         if not video_opened:
                             webbrowser.open(YOUTUBE_VIDEO_URL)
                             video_opened = True
-                        cv2.putText(frame, "DROWSINESS ALERT! Video Playing", (10, 30),
+                        cv2.putText(frame, "YOU ARE SLEEPING DUDE,", (5, 30),
                                     cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+                        cv2.putText(frame, "LISTEN TO THIS MUSIC AND WAKE THE HELL UP!!!!!", (5, 55),
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+
                 else:
                     COUNTER = 0
 
@@ -78,10 +84,10 @@ try:
                     y = int(landmarks[i].y * frame.shape[0])
                     cv2.circle(frame, (x, y), 2, (0, 255, 0), -1)
 
-      
+        
         cv2.imshow('Drowsiness Detector', frame)
         
-      
+       
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
@@ -90,4 +96,5 @@ except KeyboardInterrupt:
 
 finally:
     cap.release()
-    cv2.destroyAllWindows()
+    cv2.destroyAllWindows() 
+
